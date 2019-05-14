@@ -1,0 +1,247 @@
+﻿@page
+@model RazorCharts.Pages.indexModel
+@{
+    ViewData["Title"] = "RazorCharts";
+}
+
+<h2>RazorCharts</h2>
+@if (Model.Message != string.Empty)
+{
+    <h1>@Model.Message</h1>
+}
+
+<div style="width: 55%;
+        margin-left: auto;
+        margin-right: auto;">
+    <canvas id="myChart_simple" width="500" height="400"></canvas>
+</div>
+
+<script>
+    //function to return AJAX data
+    function GetJSON_Simple() {
+        var resp = [];
+        $.ajax({
+            type: "GET",
+            url: '/?handler=MyAjax_Simple',
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                resp.push(data);
+            },
+            error: function (req, status, error) {
+                // do something with error
+                console.log("error");
+                console.log(req);
+                console.log(status);
+                console.log(error);
+                alert("error");
+            }
+        });
+
+        return resp;
+    }
+
+    //calling said function.
+    var simpleData = GetJSON_Simple();
+
+    //getting handle to the chart
+    var ctx_simple = document.getElementById('myChart_simple');
+
+    //setting up the chart info
+    var myChart_simple = new Chart(ctx_simple, {
+        type: 'bar',
+        data: {
+            labels: simpleData[0].mylabels,
+            datasets: [{
+                label: 'COUNT',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                data: simpleData[0].myCount
+            }
+            ]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: false
+                }]
+            },
+
+        }
+    });
+
+</script>
+<br /><hr /><br />
+
+<div style="width: 55%;
+        margin-left: auto;
+        margin-right: auto;">
+    <canvas id="myChart" width="500" height="400"></canvas>
+</div>
+
+<script>
+
+    function GetJSON_Complex() {
+        var resp = [];
+        $.ajax({
+            type: "GET",
+            url: '/?handler=MyAjax_Complex',
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                resp.push(data);
+            },
+            error: function (req, status, error) {
+                // do something with error
+                console.log("error");
+                console.log(req);
+                console.log(status);
+                console.log(error);
+                alert("error");
+            }
+        });
+
+        return resp;
+    }
+    var theData = GetJSON_Complex();
+
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: theData[0].mylabels,
+            datasets: [{
+                label: 'CALLS',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+
+                borderWidth: 1,
+                data: theData[0].myCOUNT_CALLS
+            },
+            {
+                label: 'EMAILS',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1,
+                data: theData[0].myCOUNT_EMAILS
+            }
+                ,
+            {
+                label: 'TWEETS',
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgb(255, 206, 86)',
+                borderWidth: 1,
+                data: theData[0].myCOUNT_TWEETS
+            }
+
+            ]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+
+        }
+    });
+
+    //Chart.pluginService.register({
+    //    afterDraw: function (chartInstance)
+    //    {
+    //        var ctx = chartInstance.chart.ctx;
+
+    //        // render the value of the chart above the bar
+    //        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+    //        ctx.textAlign = 'center';
+    //        ctx.textBaseline = 'bottom';
+
+    //        chartInstance.data.datasets.forEach(function (dataset)
+    //        {
+    //            for (var i = 0; i < dataset.data.length; i++)
+    //            {
+    //                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+    //                if (dataset.data[i] > 0)
+    //                    ctx.fillText(dataset.data[i], model.x, model.y + 14);
+    //            }
+
+    //        });
+    //    }
+    //});
+</script>
+
+<br /><hr /><br />
+
+<div style="width: 55%;
+        margin-left: auto;
+        margin-right: auto;">
+    <canvas id="myDonutChart" width="500" height="400"></canvas>
+</div>
+
+<script>
+
+    function GetJSON_Donut() {
+        var resp = [];
+        $.ajax({
+            type: "GET",
+            url: '/?handler=MyAjax_Donut',
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                resp.push(data);
+            },
+            error: function (req, status, error) {
+                // do something with error
+                console.log("error");
+                console.log(req);
+                console.log(status);
+                console.log(error);
+                alert("error");
+            }
+        });
+
+        return resp;
+    }
+    var theDataDonut = GetJSON_Donut();
+
+
+    var data = {
+        datasets: [{
+            data: theDataDonut[0].myCount,
+            backgroundColor: ['rgb(255, 99, 132)','rgb(54, 162, 235)','rgb(255, 206, 86)'
+            ]
+        }],
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: theDataDonut[0].mylabels
+    };
+
+    var options = {
+        responsive: true,
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'My Stocks'
+        },
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        }
+    };
+
+    var ctx_Donut = document.getElementById('myDonutChart');
+    var myChart_Donut = new Chart(ctx_Donut, {
+        type: 'doughnut',
+        data: data,
+        options: options
+    });
+     
+</script>

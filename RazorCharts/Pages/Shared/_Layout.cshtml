@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="~/js/jquery.js"></script>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <script src="~/js/chart.js"></script>
+    <link href="~/css/Chart.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>
